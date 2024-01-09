@@ -10,7 +10,7 @@ Include **Build**, **Testing**, **Code quality**, **Metrics** and more...
 
 ## Prerequisites
 
-- Gitlab CI with a [runner that support docker](https://docs.gitlab.com/runner/)
+- Gitlab CI with a [runner that supports docker](https://docs.gitlab.com/runner/)
 - Minimal understanding of [Gitlab CI](https://about.gitlab.com/stages-devops-lifecycle/continuous-integration/)
 and [Gitlab CI Yaml](https://docs.gitlab.com/ee/ci/yaml)
 
