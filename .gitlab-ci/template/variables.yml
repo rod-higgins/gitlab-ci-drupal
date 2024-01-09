@@ -11,8 +11,8 @@
 .default_variables:
 
   # To be set in starter .gitlab-ci.yml
-  # CI_REF: "4.x-dev"
-  # CI_DRUPAL_VERSION: "10.0"
+  # CI_REF: "1.x-dev"
+  # CI_DRUPAL_VERSION: "10.2"
   # CI_DRUPAL_WEB_ROOT: web
 
   # Select what you are running CI on, options are:
@@ -176,7 +176,7 @@
   CI_SERVICE_CHROMEDRIVER: "drupalci/webdriver-chromedriver:production"
   CI_SERVICE_CHROMEDRIVER_PORT: 9515
   # Specific Behat chrome headless image.
-  CI_SERVICE_BEHAT_CHROME: "mogtofu33/chrome-headless:${CI_REF}"
+  CI_SERVICE_BEHAT_CHROME: "rodhiggins/chrome-headless:${CI_REF}"
   CI_SERVICE_BEHAT_CHROME_PORT: 9222
   #
   ##############################################################################
@@ -239,7 +239,7 @@
         }
       }
     }
-  # Chrome options, used by mogtofu33/chrome-headless startup.
+  # Chrome options, used by rodhiggins/chrome-headless startup.
   # @see https://peter.sh/experiments/chromium-command-line-switches/
   CHROME_OPTS: "--headless --no-sandbox --disable-gpu --window-size=1920,1080 --remote-debugging-address=0.0.0.0 --remote-debugging-port=${CI_SERVICE_BEHAT_CHROME_PORT}"
   #
@@ -259,7 +259,7 @@
   FF_NETWORK_PER_BUILD: 1
   #
   # Config files location for inclusion if not present locally (from ./.gitlab-ci/).
-  CI_REMOTE_FILES: "https://github.com/rod-higgins/gitlab-ci-drupal/-/raw/${CI_REF}/.gitlab-ci"
+  CI_REMOTE_FILES: "https://github.com/rod-higgins/gitlab-ci-drupal/tree/master/.gitlab-ci"
   #
   # Docker image version used for CI.
   # Should be the same as CI_REF, but can be overridden for some use cases.
