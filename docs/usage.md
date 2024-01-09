@@ -2,12 +2,12 @@
 
 Most configuration for this project is done through variables that you can set on your `.gitlab-ci.yml`.
 
-First look in [.gitlab-ci/template/variables.yml](https://github.com/rod-higgins/gitlab-ci-drupal/.gitlab-ci/template/variables.yml)
+First look in [.gitlab-ci/template/variables.yml](https://github.com/rod-higgins/gitlab-ci-drupal/blob/master/.gitlab-ci/template/variables.yml)
 and check the variables.
 This is all the variables you can override from global settings on Gitlab CI or
 when manually running a pipeline.
 
-See section [Advanced usage](https://github.com/rod-higgins/gitlab-ci-drupal/.gitlab-ci/docs/advanced-usage.md) for more details on each relation
+See section [Advanced usage](https://github.com/rod-higgins/gitlab-ci-drupal/blob/master/docs/advanced-usage.md) for more details on each relation
 between variables and jobs.
 
 ### Skip pipeline

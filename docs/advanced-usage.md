@@ -1,7 +1,7 @@
 ### Custom configuration files
 
 You can override any config by copying the file from
-[.gitlab-ci](https://github.com/rod-higgins/gitlab-ci-drupal/-/tree/1.x-dev/.gitlab-ci)
+[.gitlab-ci](https://github.com/rod-higgins/gitlab-ci-drupal/blob/master/.gitlab-ci.yml)
 folder on your project.
 
 For example if you want to provide your own `phpunit.xml` file, simply add it on your project in a `.gitlab-ci/` folder.
@@ -38,7 +38,7 @@ Some examples of common tasks:
 <?php
 
 // Download a remote file:
-$myFile = 'https://github.com/rod-higgins/gitlab-ci-drupal/README.md';
+$myFile = 'https://github.com/rod-higgins/gitlab-ci-drupal/blob/master/README.md';
 if ($this->taskExec("curl -fsSL $myFile -o $this->docRoot . '/README.md")->run()->wasSuccessful()) {
   $this->say('File downloaded!');
 }
@@ -116,7 +116,7 @@ tests in Drupal 9+, see
 [Type of tests in Drupal 9+](https://www.drupal.org/docs/8/testing/types-of-tests-in-drupal-8).
 
 The tests configuration is defined in
-[.gitlab-ci/phpunit.xml](https://github.com/rod-higgins/gitlab-ci-drupal/.gitlab-ci/phpunit.xml).
+[.gitlab-ci/phpunit.xml](https://github.com/rod-higgins/gitlab-ci-drupal/blob/master/.gitlab-ci/phpunit.xml).
 You can set your own specific configuration file with `CI_PHPUNIT_CONFIGURATION` or for a project simply have a
 `web/core/phpunit.xml` file.
 
@@ -304,7 +304,7 @@ For Behat, Selenium is not needed thanks to the
 
 If you need different configuration for Behat, you can look and override variable
 `BEHAT_PARAMS` in
-[.gitlab-ci/template/variables.yml](https://github.com/rod-higgins/gitlab-ci-drupal/.gitlab-ci/template/variables.yml)
+[.gitlab-ci/template/variables.yml](https://github.com/rod-higgins/gitlab-ci-drupal/blob/master/.gitlab-ci/template/variables.yml)
 
 ### Release of code to Gitlab and Drupal.org
 
