@@ -1,0 +1,273 @@
+################################################################################
+# Variables template used on this project, must be used in .gitlab-ci.yml:
+#
+# variables:
+#   extends: .default_variables
+#
+# Gitlab-CI variables documentation:
+# @see https://docs.gitlab.com/ee/ci/variables
+################################################################################
+
+.default_variables:
+
+  # To be set in starter .gitlab-ci.yml
+  # CI_REF: "4.x-dev"
+  # CI_DRUPAL_VERSION: "10.0"
+  # CI_DRUPAL_WEB_ROOT: web
+
+  # Select what you are running CI on, options are:
+  #   project
+  #     A full Drupal project managed with composer.
+  #   module
+  #     A single Drupal module or theme.
+  CI_TYPE: "project"
+  # CI_TYPE: "module"
+
+  # Path to the Drupal doc and web root.
+  # Drupal official image create symlink /opt/drupal/web > /var/www/html
+  # In case of a project we remove /opt/drupal and symlink CI_PROJECT_DIR to
+  # /opt/drupal
+  CI_DOC_ROOT: "/opt/drupal"
+  CI_WEB_ROOT: "/opt/drupal/${CI_DRUPAL_WEB_ROOT}"
+
+  # Folder with the phpunit.xml file, default is to copy the file from
+  # ./gitlab-ci/ folder to the Drupal core folder.
+  CI_PHPUNIT_CONFIGURATION: ${CI_WEB_ROOT}/core
+
+  # Nightwatch.js tests to run.
+  # @see https://www.drupal.org/docs/8/testing/javascript-testing-using-nightwatch
+  # Add --verbose for a full log from Nightwatch if it fail.
+  # Default is to run everything except core. For a module / theme, add your tag.
+  CI_NIGHTWATCH_TESTS: "--skiptags core"
+  # CI_NIGHTWATCH_TESTS: "--tag custom"
+
+  # If not using a db dump, select install profile for Behat tests.
+  CI_BEHAT_INSTALL_PROFILE: "minimal"
+  # If a dump is provided, profile will be ignored.
+  # Support local or remote file with extensions:
+  # .sql, .sql.gz, .sql.zip
+  CI_BEHAT_INSTALL_DUMP: ""
+  # Yaml file of behat tests.
+  CI_BEHAT_TESTS: "${CI_PROJECT_DIR}/behat_tests/behat.yml"
+
+  # Path to composer bin folder, default in vendor but can be set in
+  # composer.json as config: bin-dir
+  CI_COMPOSER_BIN: vendor/bin
+
+  # Composer override to use github oauth token.
+  # @see https://getcomposer.org/doc/06-config.md#github-oauth
+  # CI_COMPOSER_GITHUB_OAUTH_TOKEN: ""
+
+  # Composer override to use packagist mirror.
+  # CI_COMPOSER_REPO_PACKAGIST_URL: "https://repo.packagist.org"
+
+  # Yarn override to use registry mirror.
+  # CI_YARN_REGISTRY: "https://registry.yarnpkg.com"
+
+  ##############################################################################
+  # List of variables to set some specific configuration and files to validate.
+  #
+  # Code quality dirs, must include your PHP code to check.
+  CI_DIRS_QA_PHPCS: "${CI_WEB_ROOT}/**/custom"
+  CI_DIRS_QA_PHPSTAN: "${CI_WEB_ROOT}/**/custom"
+  CI_DIRS_QA_PHPMD: "${CI_WEB_ROOT}/modules/custom,${CI_WEB_ROOT}/themes/custom"
+  CI_DIRS_LINT_PHP: "${CI_WEB_ROOT}/**/custom"
+  #
+  CI_QA_IGNORE: "*/vendor/*,*/bootstrap/*,*/tests/*,*/.gitlab-ci/*,Readme.md,style.css,print.css,*Test.php,RoboFile.php"
+  CI_QA_SUFFIX: "php,inc,module,install,test,profile,theme"
+  #
+  CI_QA_PHPCS_STANDARD: "Drupal,DrupalPractice"
+  #
+  CI_QA_CONFIG_PHPSTAN: ${CI_PROJECT_DIR}/phpstan.neon
+  CI_QA_CONFIG_PHPMD: ${CI_PROJECT_DIR}/.phpmd.xml
+  #
+  # Eslint / Stylelint settings.
+  #
+  # Location of package.json file for install in lint js/css and yaml jobs.
+  CI_LINT_NODE_PACKAGE: ${CI_WEB_ROOT}/core
+  CI_LINT_NODE_BIN_DIR: ${CI_LINT_NODE_PACKAGE}/node_modules/.bin
+  # Configuration files, default is Drupal used for core.
+  CI_CONFIG_ESLINT: ${CI_WEB_ROOT}/core/.eslintrc.passing.json
+  CI_CONFIG_ESLINT_YAML: ${CI_WEB_ROOT}/core/.eslintrc.passing.json
+  CI_CONFIG_STYLELINT: ${CI_WEB_ROOT}/core/.stylelintrc.json
+  # Ignore files relative to project root. Default will be downloaded from this project.
+  CI_CONFIG_ESLINT_IGNORE: ${CI_PROJECT_DIR}/.eslintignore
+  CI_CONFIG_ESLINT_IGNORE_YAML: ${CI_PROJECT_DIR}/.eslintignore
+  CI_CONFIG_STYLELINT_IGNORE: ${CI_PROJECT_DIR}/.stylelintignore
+  #
+  # Space separated for multiple folders.
+  CI_DIRS_LINT_JS: "${CI_WEB_ROOT}/**/custom/**/*.js"
+  CI_DIRS_LINT_YAML: "${CI_WEB_ROOT}/**/custom/**/*.yml"
+  CI_DIRS_LINT_CSS: "${CI_WEB_ROOT}/**/custom/**/css/*.css"
+  #
+  # Metrics settings.
+  #
+  # Folder containing .phpqa.yml file.
+  CI_METRICS_CONFIG_PHPQA: ${CI_PROJECT_DIR}
+  # Comma separated for multiple folders.
+  CI_DIRS_PHP_METRICS: "${CI_WEB_ROOT}/modules/custom,${CI_WEB_ROOT}/themes/custom"
+
+  ##############################################################################
+  #
+  # Skip Build, if not running any tests or deploy.
+  CI_SKIP_BUILD: 0
+  #
+  ##############################################################################
+  # Security check on composer.lock
+  CI_SKIP_SECURITY: 0
+  #
+  # Skip all tests jobs.
+  CI_SKIP_TESTS: 0
+  #
+  # OR skip single jobs in tests.
+  #
+  # PHPunit unit,kernel with code coverage and optional Codecove.io support.
+  CI_SKIP_TEST_UNITKERNEL: 0
+  CI_SKIP_TEST_FUNCTIONAL: 0
+  CI_SKIP_TEST_FUNCTIONALJS: 0
+  CI_SKIP_TEST_NIGHTWATCHJS: 0
+  #
+  # Behat tests from behat_tests folder.
+  CI_SKIP_TEST_BEHAT: 0
+  #
+  ##############################################################################
+  # Skip all QA jobs.
+  CI_SKIP_QA: 0
+  #
+  # OR skip single jobs in qa.
+  #
+  CI_SKIP_QA_PHPCS: 0
+  CI_SKIP_QA_PHPMD: 0
+  CI_SKIP_QA_PHPSTAN: 0
+  #
+  ##############################################################################
+  # Skip all lint jobs.
+  CI_SKIP_LINT: 0
+  #
+  # OR skip single jobs in lint.
+  #
+  CI_SKIP_LINT_PHP: 0
+  CI_SKIP_LINT_CSS: 0
+  CI_SKIP_LINT_JS: 0
+  CI_SKIP_LINT_YAML: 0
+  #
+  ##############################################################################
+  # Skip all metrics jobs (phpmetrics, phploc, pdepend)
+  CI_SKIP_METRICS: 0
+  #
+  ##############################################################################
+
+  ##############################################################################
+  # Services used by some jobs (PHPunit, Behat, Nightwatch.js).
+  #
+  CI_DB_DRIVER: mysql
+  # CI_DB_DRIVER: pgsql
+  # SQLite require specific SIMPLETEST_DB value and a minimal database service
+  # like busybox.
+  # CI_DB_DRIVER: sqlite
+  #
+  # Database service as docker image and tag.
+  CI_SERVICE_DATABASE: "mariadb:10"
+  # CI_SERVICE_DATABASE: "mysql:8"
+  CI_SERVICE_DATABASE_PORT: 3306
+  # CI_SERVICE_DATABASE: "postgres:13-alpine"
+  # CI_SERVICE_DATABASE_PORT: 5432
+  #
+  CI_SERVICE_CHROMEDRIVER: "drupalci/webdriver-chromedriver:production"
+  CI_SERVICE_CHROMEDRIVER_PORT: 9515
+  # Specific Behat chrome headless image.
+  CI_SERVICE_BEHAT_CHROME: "mogtofu33/chrome-headless:${CI_REF}"
+  CI_SERVICE_BEHAT_CHROME_PORT: 9222
+  #
+  ##############################################################################
+
+  ##############################################################################
+  # Other variables that do not need editing in normal usage.
+  #
+  # Required by service:mysql/mariadb.
+  MYSQL_DATABASE: drupal
+  MYSQL_USER: drupal
+  MYSQL_PASSWORD: drupal
+  MYSQL_ALLOW_EMPTY_PASSWORD: 1
+  # Required by service:pgsql.
+  POSTGRES_PASSWORD: drupal
+  POSTGRES_DB: drupal
+  POSTGRES_USER: drupal
+  #
+  # Required by Drupal tests with PHPunit.
+  # Build is the Gitlab-ci name of the running container with the /builds code.
+  # This is provided by FF_NETWORK_PER_BUILD.
+  # @see https://git.drupalcode.org/project/drupal/-/blob/HEAD/core/phpunit.xml.dist
+  SIMPLETEST_BASE_URL: "http://build"
+  SIMPLETEST_DB: "${CI_DB_DRIVER}://drupal:drupal@db/drupal"
+  # SIMPLETEST_DB: "sqlite://localhost/:memory:"
+  #
+  BROWSERTEST_OUTPUT_DIRECTORY: "${CI_WEB_ROOT}/sites/simpletest"
+  SYMFONY_DEPRECATIONS_HELPER: "disabled"
+  #
+  # Functional Javascript tests.
+  MINK_DRIVER_ARGS_WEBDRIVER: >
+    [
+      "chrome",
+      {
+        "browserName":"chrome",
+        "chromeOptions":{
+          "w3c":false,
+          "args":[
+            "--headless",
+            "--no-sandbox",
+            "--disable-gpu",
+            "--window-size=1920,1080"
+          ]
+        }
+      },
+      "http://chromedriver:${CI_SERVICE_CHROMEDRIVER_PORT}"
+    ]
+  #
+  # Behat tests.
+  #
+  # Settings for Behat with DrupalExtension, match the tests on behat_tests
+  # included in this project.
+  # @see https://www.drupal.org/project/drupalextension
+  BEHAT_PARAMS: >
+    {
+      "extensions" : {
+        "Drupal\\DrupalExtension" : {
+          "drupal" : {
+            "drupal_root" : "${CI_WEB_ROOT}"
+          }
+        }
+      }
+    }
+  # Chrome options, used by mogtofu33/chrome-headless startup.
+  # @see https://peter.sh/experiments/chromium-command-line-switches/
+  CHROME_OPTS: "--headless --no-sandbox --disable-gpu --window-size=1920,1080 --remote-debugging-address=0.0.0.0 --remote-debugging-port=${CI_SERVICE_BEHAT_CHROME_PORT}"
+  #
+  # NightwatchJS settings.
+  #
+  # @see https://git.drupalcode.org/project/drupal/blob/HEAD/core/tests/README.md#running-nightwatch-tests
+  # @see https://git.drupalcode.org/project/drupal/-/blob/HEAD/core/.env.example
+  DRUPAL_TEST_WEBDRIVER_CHROME_ARGS: "--headless --no-sandbox --disable-gpu --window-size=1920,1080"
+  DRUPAL_NIGHTWATCH_SEARCH_DIRECTORY: "../"
+  DRUPAL_NIGHTWATCH_IGNORE_DIRECTORIES: "node_modules,vendor,.*,sites/*/files,sites/*/private,sites/default/files/simpletest"
+  DRUPAL_NIGHTWATCH_OUTPUT: ${CI_PROJECT_DIR}/report-nightwatchjs
+  #
+  # General settings.
+  #
+  # Enable Docker network bridge to access services.
+  # @see https://docs.gitlab.com/runner/configuration/feature-flags.html#available-feature-flags
+  FF_NETWORK_PER_BUILD: 1
+  #
+  # Config files location for inclusion if not present locally (from ./.gitlab-ci/).
+  CI_REMOTE_FILES: "https://github.com/rod-higgins/gitlab-ci-drupal/-/raw/${CI_REF}/.gitlab-ci"
+  #
+  # Docker image version used for CI.
+  # Should be the same as CI_REF, but can be overridden for some use cases.
+  CI_IMAGE_REF: ${CI_REF}
+  #
+  # Internal verbosity for RoboFile.php scripts.
+  CI_VERBOSE: 0
+  #
+  # Make CI very (very!) verbose in case of problem.
+  # @see https://docs.gitlab.com/ee/ci/variables/#debug-logging
+  # CI_DEBUG_TRACE: 1

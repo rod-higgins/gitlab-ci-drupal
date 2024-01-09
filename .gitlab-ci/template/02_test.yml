@@ -1,0 +1,31 @@
+################################################################################
+# Testing template for phpunit, this provide Apache / Php.
+################################################################################
+
+.test_template:
+  extends: .artifacts_reports
+  dependencies:
+    - build
+  services:
+    - name: ${CI_SERVICE_DATABASE}
+      alias: db
+  before_script:
+    # Start Apache first to ensure it's running.
+    - apache2-foreground&
+    # Common ci scripts.
+    - !reference [.scripts, set-registries]
+    - !reference [.scripts, ci-prepare]
+    - !reference [.scripts, test-permissions]
+
+.test_template_behat:
+  extends: .test_template
+  before_script:
+    # Start Apache first to ensure it's running.
+    - apache2-foreground&
+    # Common ci scripts.
+    - !reference [.scripts, set-registries]
+    - !reference [.scripts, ci-prepare]
+    - !reference [.scripts, test-permissions]
+    - if [ ${CI_TYPE} != "project" ]; then
+        robo drupal:require-dev $CI_SKIP_TEST_BEHAT;
+      fi

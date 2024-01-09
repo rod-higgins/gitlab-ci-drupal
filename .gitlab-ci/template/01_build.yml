@@ -1,0 +1,41 @@
+################################################################################
+# Build template used for Build job.
+################################################################################
+
+.build_template:
+  before_script:
+    - composer self-update
+    - !reference [.scripts, set-registries]
+    # Add build ssh key to access private repositories or servers.
+    - !reference [.scripts, build-ssh-key]
+    - !reference [.scripts, get-robo]
+    # Call any extra build script from ./.gitlab-ci/build.php
+    - robo ci:build before_build
+  after_script:
+    # Call any extra build script from ./.gitlab-ci/build.php
+    - robo ci:build
+    - !reference [.scripts, ci-prepare]
+  cache:
+    key: "drupal-${CI_COMMIT_REF_NAME}"
+    paths:
+      - vendor
+      - node_modules
+      - core/node_modules
+      - ${CI_DRUPAL_WEB_ROOT}
+  artifacts:
+    expire_in: 1 week
+    paths:
+      # Build files for next steps and deploy/release.
+      - vendor
+      - ${CI_COMPOSER_BIN}
+      - ${CI_DRUPAL_WEB_ROOT}
+      - composer.json
+      - composer.lock
+      # Files from this project.
+      - RoboFile.php
+      - .gitlab-ci
+      # Load environment strategy, if used.
+      - load.environment.php
+      # Legacy Drupal composer project template.
+      - drush
+      - scripts
