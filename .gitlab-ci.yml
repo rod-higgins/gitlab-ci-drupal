@@ -11,7 +11,7 @@ include:
     ref: 1.x-dev
     file: '/.gitlab-ci/jobs.gitlab-ci.yml'
   # If hosted on an other Gitlab / Github instance.
-  - remote: 'https://github.com/rod-higgins/gitlab-ci-drupal/.gitlab-ci/jobs.gitlab-ci.yml'
+  - remote: 'https://github.com/rod-higgins/gitlab-ci-drupal/blob/master/.gitlab-ci.yml'
 
   # Use a Workflow template matching your needs side of `CI_SKIP_*` variables.
   # @see https://docs.gitlab.com/ee/ci/yaml/workflow.html#workflowrules-templates

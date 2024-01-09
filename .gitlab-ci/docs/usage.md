@@ -25,7 +25,7 @@ You can set variables values on your `.gitlab-ci.yml` or in the Gitlab CI UI
 under _Settings > CI/CD > Variables_
 
 With variables you can disable some tests without editing any file, available
-skip variables are described in [variables.yml](https://github.com/rod-higgins/gitlab-ci-drupal/.gitlab-ci/template/variables.yml)
+skip variables are described in [variables.yml](https://github.com/rod-higgins/gitlab-ci-drupal/blob/master/.gitlab-ci/template/variables.yml)
 
 ### Workflow of jobs
 
