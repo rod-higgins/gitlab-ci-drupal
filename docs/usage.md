@@ -7,7 +7,7 @@ and check the variables.
 This is all the variables you can override from global settings on Gitlab CI or
 when manually running a pipeline.
 
-See section [Advanced usage](/advanced-usage/) for more details on each relation
+See section [Advanced usage](https://github.com/rod-higgins/gitlab-ci-drupal/.gitlab-ci/docs/advanced-usage.md) for more details on each relation
 between variables and jobs.
 
 ### Skip pipeline
